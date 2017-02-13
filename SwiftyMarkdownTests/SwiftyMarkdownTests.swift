@@ -275,6 +275,24 @@ class SwiftyMarkdownTests: XCTestCase {
 //		XCTAssertEqual(md.attributedString().string, "Twitter @VoyageTravelApp\n")
 	}
 	
-
+    func testFixedFont() {
+        let assertFontSize: (Dictionary<String, Any>, CGFloat) -> Void =  { attrs, fontSize in
+            guard let font = attrs[NSFontAttributeName] as? UIFont else {
+                XCTFail("Missing font attribute")
+                return
+            }
+            
+            XCTAssertEqual(fontSize, font.pointSize, "Fixed font size")
+        }
+        
+        let fontSize: CGFloat = 120
+        
+        let singleLine = "A single line of text"
+        
+        let md = SwiftyMarkdown(string: singleLine)
+        md.body.fontSize = fontSize
+        let attrs = md.attributedString().attributes(at: 0, effectiveRange: nil)
+        assertFontSize(attrs, fontSize)
+    }
 	
 }
